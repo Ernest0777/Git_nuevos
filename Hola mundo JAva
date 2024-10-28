@@ -1,0 +1,96 @@
+// Clase principal
+public class HolaMundoApp {
+    public static void main(String[] args) {
+        // Instanciamos el procesador de mensajes
+        MensajeProcesador procesador = new MensajeProcesador();
+        
+        // Usamos la fábrica para crear un mensaje "Hola"
+        Mensaje mensaje = MensajeFactory.crearMensaje(MensajeTipo.SALUDO, "Hola");
+        
+        // Imprimimos "Hola"
+        procesador.procesar(mensaje);
+        
+        // Creamos otro mensaje para "Mundo" y lo procesamos
+        mensaje = MensajeFactory.crearMensaje(MensajeTipo.OBJETO, "Mundo");
+        procesador.procesar(mensaje);
+        
+        // Imprimimos la despedida
+        mensaje = MensajeFactory.crearMensaje(MensajeTipo.DESPEDIDA, "¡Hasta luego!");
+        procesador.procesar(mensaje);
+    }
+}
+
+// Enum para tipos de mensaje
+enum MensajeTipo {
+    SALUDO, OBJETO, DESPEDIDA
+}
+
+// Interfaz para un mensaje
+interface Mensaje {
+    String obtenerTexto();
+}
+
+// Clase concreta de MensajeSaludo
+class MensajeSaludo implements Mensaje {
+    private String texto;
+    
+    public MensajeSaludo(String texto) {
+        this.texto = texto;
+    }
+    
+    @Override
+    public String obtenerTexto() {
+        return "Saludo: " + texto;
+    }
+}
+
+// Clase concreta de MensajeObjeto
+class MensajeObjeto implements Mensaje {
+    private String texto;
+    
+    public MensajeObjeto(String texto) {
+        this.texto = texto;
+    }
+    
+    @Override
+    public String obtenerTexto() {
+        return "Objeto: " + texto;
+    }
+}
+
+// Clase concreta de MensajeDespedida
+class MensajeDespedida implements Mensaje {
+    private String texto;
+    
+    public MensajeDespedida(String texto) {
+        this.texto = texto;
+    }
+    
+    @Override
+    public String obtenerTexto() {
+        return "Despedida: " + texto;
+    }
+}
+
+// Fábrica de mensajes para crear el tipo adecuado
+class MensajeFactory {
+    public static Mensaje crearMensaje(MensajeTipo tipo, String texto) {
+        switch (tipo) {
+            case SALUDO:
+                return new MensajeSaludo(texto);
+            case OBJETO:
+                return new MensajeObjeto(texto);
+            case DESPEDIDA:
+                return new MensajeDespedida(texto);
+            default:
+                throw new IllegalArgumentException("Tipo de mensaje no reconocido");
+        }
+    }
+}
+
+// Procesador de mensajes
+class MensajeProcesador {
+    public void procesar(Mensaje mensaje) {
+        System.out.println(mensaje.obtenerTexto());
+    }
+}
